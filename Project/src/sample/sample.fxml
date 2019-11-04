@@ -25,17 +25,25 @@
                         <Button fx:id="btnStart" mnemonicParsing="false" onAction="#startAction" prefHeight="200.0" prefWidth="400.0" text="Start" />
                         <!--<Button fx:id="btnStop" mnemonicParsing="false" onAction="#stopAction" prefHeight="200.0" prefWidth="400.0" text="Stop" />-->
                         <!--<Button fx:id="morePoints" mnemonicParsing="false" onAction="#morePointsAction" prefHeight="200.0" prefWidth="400.0" text="Dolosuj więcej punktów" />-->
-                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearAction" prefHeight="200.0" prefWidth="400.0" text="Clear" />
+                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearAction" prefHeight="200.0" prefWidth="349.0" text="Clear" />
                     </children>
                 </VBox>
-                <AnchorPane prefHeight="351.0" prefWidth="215.0">
+                <AnchorPane prefHeight="351.0" prefWidth="320.0">
                     <children>
-                        <Label layoutX="66.0" layoutY="36.0" text="Neighbourhood" />
+                        <Label layoutX="23.0" layoutY="228.0" text="Neighbourhood" />
                         <!--<Label layoutX="65.0" layoutY="129.0" text="Wybor punktow" />-->
-                        <ComboBox fx:id="neighborsCombo" layoutX="33.0" layoutY="77.0" prefWidth="150.0" />
+                        <ComboBox fx:id="neighborsCombo" layoutX="167.0" layoutY="224.0" prefHeight="25.0" prefWidth="125.0" />
                         <!--<ComboBox fx:id="pointsCombo" layoutX="33.0" layoutY="176.0" prefWidth="150.0" />-->
-                        <RadioButton fx:id="periodicBtn" layoutX="75.0" layoutY="184.0" mnemonicParsing="false" text="ON/OFF" />
-                        <Label layoutX="33.0" layoutY="142.0" text="Periodic boundary condition" />
+                        <RadioButton fx:id="periodicBtn" layoutX="212.0" layoutY="275.0" mnemonicParsing="false" text="ON/OFF" />
+                        <Label layoutX="23.0" layoutY="275.0" text="Periodic boundary condition" />
+                  <Label layoutX="23.0" layoutY="33.0" text="Amount of inclusions" />
+                  <Label layoutX="23.0" layoutY="71.0" text="Size of inclusions" />
+                  <Label layoutX="23.0" layoutY="112.0" text="Type of inclusion" />
+                  <TextField fx:id="inclusionsId" text="10" layoutX="169.0" layoutY="29.0" prefHeight="25.0" prefWidth="120.0" />
+                  <TextField fx:id="mySIZE" layoutX="135.0" layoutY="2.0" prefHeight="25.0" prefWidth="210.0" />
+                  <TextField fx:id="inclusionsSizeId" text="2" layoutX="169.0" layoutY="67.0" prefHeight="25.0" prefWidth="120.0" />
+                  <ComboBox fx:id="inclusionTypeId" layoutX="168.0" layoutY="108.0" prefHeight="25.0" prefWidth="122.0" />
+                  <Button fx:id="inclusionsAddBtn" layoutX="121.0" layoutY="146.0" mnemonicParsing="false" onAction="#inclusionsAddAction" text="Add inclusions" />
                     </children>
                 </AnchorPane>
             </children>
@@ -44,7 +52,7 @@
     <top>
         <AnchorPane prefHeight="53.0" prefWidth="706.0" BorderPane.alignment="CENTER">
             <children>
-                <Label layoutX="123.0" layoutY="19.0" text="Number of grains" />
+                <Label layoutX="123.0" layoutY="19.0" text="Amount of grains" />
                 <TextField fx:id="numberCellsText" layoutX="246.0" layoutY="7.0" prefHeight="25.0" prefWidth="79.0" text="50" />
                 <Label layoutX="374.0" layoutY="18.0" text="Width" />
                 <TextField fx:id="widthText" layoutX="443.0" layoutY="7.0" prefHeight="25.0" prefWidth="78.0" text="300" />
@@ -81,9 +89,9 @@
     <center>
         <ScrollPane prefHeight="496.0" prefWidth="571.0" BorderPane.alignment="CENTER">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="1132.0">
                     <children>
-                        <Canvas fx:id="canvas" height="700.0" onMousePressed="#handleMouseClick" width="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Canvas fx:id="canvas" height="700.0" layoutX="-1.0" onMousePressed="#handleMouseClick" width="1201.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-68.0" AnchorPane.topAnchor="0.0" />
                     </children>
                 </AnchorPane>
             </content>

@@ -28,7 +28,11 @@ import java.util.stream.Collectors;
 public class Controller implements Initializable {
     public TextField widthText;
     public TextField heightText;
+    public TextField inclusionsSizeId;
+    public ComboBox inclusionTypeId;
+    public TextField inclusionsId;
     @FXML  TextField numberCellsText;
+    @FXML  TextField mySIZE;
     @FXML  Canvas canvas;
     @FXML  RadioButton periodicBtn;
     @FXML  ComboBox neighborsCombo;
@@ -42,14 +46,19 @@ public class Controller implements Initializable {
     private static final int TOP_PADDING = 0;
     public static final int SCALE = 2;
     public static final String SEPARATOR = ";";
+    boolean isClear = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mySIZE.setVisible(false);
         btnStart.setDisable(true);
         btnClear.setDisable(true);
         gc = canvas.getGraphicsContext2D();
         numberOfGrains = Integer.parseInt(this.numberCellsText.getText());
         neighborsCombo.setValue("VonNeumann");
+        inclusionTypeId.getItems().addAll("square","circle");
+        inclusionTypeId.setValue("square");
+        isClear = true;
     }
 
     public void handleMouseClick(MouseEvent mouseEvent) {
@@ -72,35 +81,43 @@ public class Controller implements Initializable {
     }
 
     public void startAction(ActionEvent actionEvent) {
-        btnRand.setDisable(false);
-        btnStart.setDisable(true);
-        btnClear.setDisable(false);
-      //  cleanGrowth();
-        String chosenNeighbourhood = neighborsCombo.getValue().toString();
-        Nucleon.setNeighbourhoodType(chosenNeighbourhood);
-        SimpleGrainGrowth growth = new SimpleGrainGrowth();
-        growth.growGrains(chosenNeighbourhood);
+        if (Nucleon.checkIfAnyEmptySpaces()) {
+            btnRand.setDisable(false);
+            btnStart.setDisable(true);
+            btnClear.setDisable(false);
+            //  cleanGrowth();
+            String chosenNeighbourhood = neighborsCombo.getValue().toString();
+            Nucleon.setNeighbourhoodType(chosenNeighbourhood);
+            SimpleGrainGrowth growth = new SimpleGrainGrowth();
+            growth.growGrains(chosenNeighbourhood);
 
-        print();
+            print();
+        }
     }
 
     public void randCellAction(ActionEvent actionEvent) {
-        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+       // System.out.println("rand size"+ Nucleon.getGrid());
+        if(Nucleon.getGrid() == null){
+
+            gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+            prepareGrid();
+        }
+        //gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         setOfRandomCells.clear();
         numberOfGrains = Integer.parseInt(this.numberCellsText.getText());
-        prepareGrid();
+       // prepareGrid();
         if (numberOfGrains < 2)
             throw new IllegalArgumentException("The minimum number of grains is 2");
         if (numberOfGrains > Nucleon.getGrid().getGrid().size())
             throw new IllegalArgumentException("The maximum number of grains is size of the grid!");
 
-        cleanNucleation();
-        Nucleon.setNumberOfGrains(numberOfGrains);
+        //cleanNucleation();
+        Nucleon.setNumberOfGrains(Nucleon.getNumberOfGrains() + numberOfGrains);
         chooseGrainsColors();
 
         try {
             chooseGrainsPosition();
-            setGrainsStates();
+            setGrainsStates(numberOfGrains);
         }
         catch (Exception e) {
             System.out.println("Aj aj. Coś zrypałam w rozrodzie ziarn");
@@ -130,6 +147,9 @@ public class Controller implements Initializable {
             for (Cell c : Nucleon.getGrid().getGrid()) {
                 if(c.getState() == 0) {
                     gc.setFill(Color.WHITE);
+                } else if(c.getState() == 1){
+                    gc.setFill(Color.BLACK);
+                   // Nucleon.getGrid().getCell(c.getX(),c.getY()).setId(1);
                 }
                 else {
                     gc.setFill(Nucleon.getGrainsColors().get(c.getState()));
@@ -140,45 +160,56 @@ public class Controller implements Initializable {
     }
 
     public void chooseGrainsPosition() {
-        for (Cell c : Nucleon.getGrid().getGrid()) {
-            c.setState(0);
-        }
 
-        Random generator = new Random();
+        if (Nucleon.checkIfAnyEmptySpaces()) {
+            Random generator = new Random();
 
-        for (int i = 0; i < Nucleon.getNumberOfGrains(); i++) {
+            for (int i = 0; i < Nucleon.getNumberOfGrains(); i++) {
 
-            int random = generator.nextInt(Nucleon.getGrid().getGrid().size());
-            if (this.setOfRandomCells.contains(random)) {
-                i--;
-            } else {
-                this.setOfRandomCells.add(random);
+
+                int random = generator.nextInt(Nucleon.getGrid().getGrid().size());
+                if (this.setOfRandomCells.contains(random)) {
+                    i--;
+                } else {
+                    this.setOfRandomCells.add(random);
+                }
+
             }
         }
     }
 
-    public void setGrainsStates() {
+    public void setGrainsStates(int numberOfGrains) {
+        System.out.println("numberOfGrains "+ numberOfGrains);
         Iterator<Integer> iterator = setOfRandomCells.iterator();
-        int phase = 1;
+        int phase = 2 + (Nucleon.getNumberOfGrains() - numberOfGrains);
+        int id = 0;
         while (iterator.hasNext()) {
             int i = iterator.next();
             Nucleon.getGrid().getCellAsListPosition(i).setState(phase);
             phase++;
+            //Nucleon.getGrid().getCellAsListPosition(i).setId(id);
+           // id++;
         }
     }
     public void chooseGrainsColors() {
         HashMap<Integer, Color> grains = new HashMap<>();
         Random generator = new Random();
 
-        for (int i = 1; i <= Nucleon.getNumberOfGrains(); i++) {
+        grains.put(0, Color.WHITE);
+        grains.put(1, Color.BLACK);
+
+        for (int i = 2; i <= Nucleon.getNumberOfGrains()+1; i++) {
             Color color = (Color.rgb(generator.nextInt(255), generator.nextInt(255), generator.nextInt(255)));
             if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || grains.containsValue(color)) {
+               // if(color.equals(Color.BLACK)){
+                   // Nucleon.getGrid().getCellAsListPosition(i).setId(1);
+                //}
                 --i;
                 continue;
             }
             grains.put(i, color);
-            Nucleon.setGrainsColors(grains);
         }
+        Nucleon.setGrainsColors(grains);
     }
 
     public int RGBtoINT(float red, float green, float blue) {
@@ -203,7 +234,7 @@ public class Controller implements Initializable {
     }
 
     public static void cleanNucleation() {
-        Nucleon.getGrainsColors().keySet().removeIf(key -> !(key.equals(0)));
+        Nucleon.getGrainsColors().keySet().removeIf(key -> !(key.equals(0)) && !(key.equals(1)));
         Nucleon.setNumberOfGrains(0);
         Nucleon.setNeighbourhoodType(null);
         Nucleon.getGrid().getGrid().forEach(cell -> {
@@ -251,7 +282,8 @@ public class Controller implements Initializable {
             String[] tokens = currentLine.split(SEPARATOR);
 
             Nucleon.setNumberOfGrains(Integer.parseInt(tokens[3]));
-            Nucleon.setNeighbourhoodType(tokens[4]);
+            Nucleon.setNumberOfInclusions(Integer.parseInt(tokens[4]));
+            Nucleon.setNeighbourhoodType(tokens[5]);
 
             Grid grid = new Grid(Integer.parseInt(tokens[0]),Integer.parseInt(tokens[1]),Boolean.parseBoolean(tokens[2]));
 
@@ -286,15 +318,19 @@ public class Controller implements Initializable {
 
             HashMap<Color, Integer> grainsColors = new HashMap<>();
             grainsColors.put(Color.WHITE, 0);
+            grainsColors.put(Color.BLACK, 1);
 
-            int numberOfGrains = 0;
+            int numberOfGrains = 1;
 
             for (int y = 0; y < image.getHeight(); y++) {
                 for (int x = 0; x < image.getWidth(); x++) {
                     Color color = INTtoRGB(image.getRGB(x, y));
                     Cell cell = new Cell(x, y);
-                    if (color.equals(Color.WHITE) || color.equals(Color.BLACK)) {
+                    if (color.equals(Color.WHITE)) {
                         cell.setState(0);
+                    } else if (color.equals(Color.BLACK)) {
+                        Nucleon.setNumberOfInclusions(1);
+                        cell.setState(1);
                     }
                     else if (grainsColors.containsKey(color)) {
                         cell.setState(grainsColors.get(color));
@@ -309,7 +345,7 @@ public class Controller implements Initializable {
             }
 
             Nucleon.setGrid(grid);
-            Nucleon.setNumberOfGrains(numberOfGrains);
+            Nucleon.setNumberOfGrains(numberOfGrains -1);
 
             Map<Integer, Color> colorsInversed = grainsColors.entrySet()
                     .stream()
@@ -347,6 +383,8 @@ public class Controller implements Initializable {
                 .append(grid.isPeriodic())
                 .append(SEPARATOR)
                 .append(Nucleon.getNumberOfGrains())
+                .append(SEPARATOR)
+                .append(Nucleon.getNumberOfInclusions())
                 .append(SEPARATOR)
                 .append(neighbourhoodType)
                 .append(System.lineSeparator())
@@ -402,5 +440,29 @@ public class Controller implements Initializable {
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void inclusionsAddAction(ActionEvent actionEvent) {
+        int numberOfInclusions = Integer.parseInt(this.inclusionsId.getText());
+        Nucleon.setNumberOfInclusions(numberOfInclusions);
+        if(Nucleon.getGrid() == null) {
+            prepareGrid();
+            inclusionsAddAction(actionEvent);
+        }
+        String inclusionType = inclusionTypeId.getValue().toString();
+
+        if(Nucleon.getNumberOfInclusions() != 0) {
+            int sizeOfInclusions = Integer.parseInt(this.inclusionsSizeId.getText());
+            Inclusion inclusion = new Inclusion();
+
+            if (Nucleon.getNumberOfGrains() == 0)
+                inclusion.addRandomlyOnStart(numberOfInclusions, sizeOfInclusions, inclusionType);
+            else
+                inclusion.addOnBoundaries(numberOfInclusions, sizeOfInclusions, inclusionType);
+        }
+        else {
+            System.out.println("nic");
+        }
+        print();
     }
 }

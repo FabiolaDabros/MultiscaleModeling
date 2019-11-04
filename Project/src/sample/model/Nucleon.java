@@ -9,10 +9,10 @@ import java.util.Map;
 public class Nucleon {
     private static Grid grid;
     private static int numberOfGrains;
+    private static int numberOfInclusions;
     private static String neighbourhoodType;
     private static Map<Integer, Color> grainsColors = new HashMap<>();
 
-    static { grainsColors.put(0, Color.WHITE); }
     private Nucleon() {}
     public static void setGrid(Grid g) {
         grid = g;
@@ -46,5 +46,22 @@ public class Nucleon {
         numberOfGrains = 0;
         neighbourhoodType = null;
         grainsColors.keySet().removeIf(key -> !(key.equals(0)));
+        numberOfInclusions = 0;
+    }
+
+    public static int getNumberOfInclusions() {
+        return numberOfInclusions;
+    }
+
+    public static void setNumberOfInclusions(int numberOfInclusions) {
+        Nucleon.numberOfInclusions = numberOfInclusions;
+    }
+
+    public static boolean checkIfAnyEmptySpaces() {
+        for (Cell c: Nucleon.getGrid().getGrid()) {
+            if (c.getState() == 0)
+                return true;
+        }
+        return false;
     }
 }

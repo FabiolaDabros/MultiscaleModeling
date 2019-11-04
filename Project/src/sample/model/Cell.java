@@ -6,12 +6,21 @@ public class Cell {
     private int x;
     private int y;
     private int state;
+    private int id;
     private int futureState;
     private Neighbourhood neighbourhood;
 
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getX() {

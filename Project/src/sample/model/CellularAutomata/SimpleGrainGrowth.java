@@ -45,7 +45,7 @@ public class SimpleGrainGrowth {
         List<Cell> neighbours = c.getNeighbourhood().getNeighbours();
         HashMap<Integer, Integer> statesAround = new HashMap<>();
         for (Cell n : neighbours) {
-            if (n.getState() != 0)
+            if (n.getState() != 0 && n.getState() != 1)
                 statesAround.merge(n.getState(), 1, Integer::sum);
         }
         if(!statesAround.isEmpty()) {
