@@ -12,6 +12,7 @@ public class Nucleon {
     private static int numberOfInclusions;
     private static String neighbourhoodType;
     private static Map<Integer, Color> grainsColors = new HashMap<>();
+    private static int numberOfSubstructures;
 
     private Nucleon() {}
     public static void setGrid(Grid g) {
@@ -47,6 +48,7 @@ public class Nucleon {
         neighbourhoodType = null;
         grainsColors.keySet().removeIf(key -> !(key.equals(0)));
         numberOfInclusions = 0;
+        numberOfSubstructures = 0;
     }
 
     public static int getNumberOfInclusions() {
@@ -63,5 +65,13 @@ public class Nucleon {
                 return true;
         }
         return false;
+    }
+
+    public static int getNumberOfSubstructures() {
+        return numberOfSubstructures;
+    }
+
+    public static void setNumberOfSubstructures(int numberOfSubstructures) {
+        Nucleon.numberOfSubstructures = numberOfSubstructures;
     }
 }

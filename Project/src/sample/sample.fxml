@@ -30,20 +30,28 @@
                 </VBox>
                 <AnchorPane prefHeight="351.0" prefWidth="320.0">
                     <children>
-                        <Label layoutX="23.0" layoutY="228.0" text="Neighbourhood" />
+                        <Label layoutX="23.0" layoutY="41.0" text="Neighborhood" />
                         <!--<Label layoutX="65.0" layoutY="129.0" text="Wybor punktow" />-->
-                        <ComboBox fx:id="neighborsCombo" layoutX="167.0" layoutY="224.0" prefHeight="25.0" prefWidth="125.0" />
+                        <ComboBox fx:id="neighborsCombo" layoutX="167.0" layoutY="37.0" prefHeight="25.0" prefWidth="125.0" />
                         <!--<ComboBox fx:id="pointsCombo" layoutX="33.0" layoutY="176.0" prefWidth="150.0" />-->
-                        <RadioButton fx:id="periodicBtn" layoutX="212.0" layoutY="275.0" mnemonicParsing="false" text="ON/OFF" />
-                        <Label layoutX="23.0" layoutY="275.0" text="Periodic boundary condition" />
-                  <Label layoutX="23.0" layoutY="33.0" text="Amount of inclusions" />
-                  <Label layoutX="23.0" layoutY="71.0" text="Size of inclusions" />
-                  <Label layoutX="23.0" layoutY="112.0" text="Type of inclusion" />
-                  <TextField fx:id="inclusionsId" text="10" layoutX="169.0" layoutY="29.0" prefHeight="25.0" prefWidth="120.0" />
+                        <RadioButton fx:id="periodicBtn" layoutX="212.0" layoutY="88.0" mnemonicParsing="false" text="ON/OFF" />
+                        <Label layoutX="25.0" layoutY="88.0" text="Periodic boundary condition" />
+                  <Label layoutX="23.0" layoutY="143.0" text="Amount of inclusions" />
+                  <Label layoutX="23.0" layoutY="181.0" text="Size of inclusions" />
+                  <Label layoutX="23.0" layoutY="222.0" text="Type of inclusion" />
+                  <TextField fx:id="inclusionsId" layoutX="169.0" layoutY="139.0" prefHeight="25.0" prefWidth="120.0" text="10" />
                   <TextField fx:id="mySIZE" layoutX="135.0" layoutY="2.0" prefHeight="25.0" prefWidth="210.0" />
-                  <TextField fx:id="inclusionsSizeId" text="2" layoutX="169.0" layoutY="67.0" prefHeight="25.0" prefWidth="120.0" />
-                  <ComboBox fx:id="inclusionTypeId" layoutX="168.0" layoutY="108.0" prefHeight="25.0" prefWidth="122.0" />
-                  <Button fx:id="inclusionsAddBtn" layoutX="121.0" layoutY="146.0" mnemonicParsing="false" onAction="#inclusionsAddAction" text="Add inclusions" />
+                  <TextField fx:id="inclusionsSizeId" layoutX="169.0" layoutY="177.0" prefHeight="25.0" prefWidth="120.0" text="2" />
+                  <ComboBox fx:id="inclusionTypeId" layoutX="168.0" layoutY="218.0" prefHeight="25.0" prefWidth="122.0" />
+                  <Button fx:id="inclusionsAddBtn" layoutX="121.0" layoutY="256.0" mnemonicParsing="false" onAction="#inclusionsAddAction" text="Add inclusions" />
+                  <Label layoutX="23.0" layoutY="346.0" text="Shape percentage" />
+                  <TextField fx:id="shapePercentageId" layoutX="168.0" layoutY="342.0" prefHeight="25.0" prefWidth="128.0" text="50" />
+                  <Label layoutX="26.0" layoutY="306.0" text="Shape control" />
+                  <RadioButton fx:id="shapeControlOnOffId" layoutX="214.0" layoutY="306.0" mnemonicParsing="false" text="ON/OFF" />
+                   <Label layoutX="26.0" layoutY="398.0" text="Structure" />
+                  <ComboBox fx:id="structureTypeId" layoutX="167.0" layoutY="394.0" prefHeight="25.0" prefWidth="129.0" />
+                  <Button fx:id="clearStructureBtnId" layoutX="121.0" layoutY="437.0" mnemonicParsing="false" onAction="#clearStructureBtn" text="Show selected" />
+                  <TextField fx:id="mySIZE1" layoutX="110.0" layoutY="449.0" prefHeight="25.0" prefWidth="210.0" />
                     </children>
                 </AnchorPane>
             </children>
@@ -52,14 +60,14 @@
     <top>
         <AnchorPane prefHeight="53.0" prefWidth="706.0" BorderPane.alignment="CENTER">
             <children>
-                <Label layoutX="123.0" layoutY="19.0" text="Amount of grains" />
-                <TextField fx:id="numberCellsText" layoutX="246.0" layoutY="7.0" prefHeight="25.0" prefWidth="79.0" text="50" />
-                <Label layoutX="374.0" layoutY="18.0" text="Width" />
-                <TextField fx:id="widthText" layoutX="443.0" layoutY="7.0" prefHeight="25.0" prefWidth="78.0" text="300" />
+                <Label layoutX="507.0" layoutY="24.0" text="Amount of grains" />
+                <TextField fx:id="numberCellsText" layoutX="618.0" layoutY="12.0" prefHeight="25.0" prefWidth="79.0" text="50" />
+                <Label layoutX="150.0" layoutY="23.0" text="Width" />
+                <TextField fx:id="widthText" layoutX="195.0" layoutY="11.0" prefHeight="25.0" prefWidth="78.0" text="300" />
                 <!--<Label layoutX="780.0" layoutY="30.0" text="Promień" />-->
                 <!--<TextField fx:id="radiousText" layoutX="851.0" layoutY="26.0" prefHeight="25.0" prefWidth="80.0" text="20" />-->
-                <Label layoutX="583.0" layoutY="19.0" text="Height" />
-                <TextField fx:id="heightText" layoutX="626.0" layoutY="7.0" prefHeight="25.0" prefWidth="80.0" text="300" />
+                <Label layoutX="335.0" layoutY="23.0" text="Height" />
+                <TextField fx:id="heightText" layoutX="378.0" layoutY="11.0" prefHeight="25.0" prefWidth="80.0" text="300" />
             <MenuButton fx:id="fileId" layoutX="23.0" layoutY="14.0" mnemonicParsing="false" text="File">
               <items>
                 <MenuItem mnemonicParsing="false">
