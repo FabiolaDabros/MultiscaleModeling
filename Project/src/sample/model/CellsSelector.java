@@ -3,6 +3,7 @@ package sample.model;
 import javafx.scene.paint.Color;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CellsSelector {
     private List<Cell> selectedCells;
@@ -46,12 +47,6 @@ public class CellsSelector {
         }
     }
 
-    public void unselectAll() {
-        removedColors.forEach( (i, c) -> Nucleon.getGrainsColors().put(i, removedColors.get(i)));
-        selectedCells.clear();
-        removedColors.clear();
-    }
-
     public ArrayList<Integer> getSelectedGrainsId() {
         Set<Integer> set = new HashSet<>();
         for (Cell c : selectedCells)
@@ -72,4 +67,44 @@ public class CellsSelector {
     public List<Cell> getSelectedCells() {
         return selectedCells;
     }
+
+    public void selectAllGrains() {
+        List<Cell> allCellsWithoutSelected = Nucleon.getGrid().getGrid().stream()
+                .filter(c -> !selectedCells.contains(c)).collect(Collectors.toList());
+
+        for (Cell cell : allCellsWithoutSelected) {
+            if (cell.getState() != 1 && cell.getState() != 0) {
+                selectedCells.add(cell);
+                if (!removedColors.containsKey(cell.getState())) {
+                    setSelectedColorToGrain(cell.getState());
+                }
+            }
+        }
+    }
+
+    public boolean checkIfAllSelected() {
+        List<Cell> grid = Nucleon.getGrid().getGrid();
+        Optional<Cell> cell = grid.stream().filter(c -> c.getState() != 0 &&
+                c.getState() != 1 && !selectedCells.contains(c)).findAny();
+        return !cell.isPresent();
+    }
+
+    public void unselectAll() {
+        ArrayList<Integer> selected = new ArrayList<>();
+        for (Cell c: selectedCells
+        ) {if (!selected.contains(c.getState()))
+            selected.add(c.getState());
+        }
+        Map<Integer, Color> colors = Nucleon.getGrainsColors();
+        removedColors.forEach(colors::put);
+        selectedCells.clear();
+        removedColors.clear();
+    }
+
+    public void removeAllDeteted() {
+        List<Integer> stateNumbers = new ArrayList<>();
+        stateNumbers.addAll(removedColors.keySet());
+        Nucleon.getGrainsColors().keySet().removeIf(key -> key != 0 && key != 1 && !stateNumbers.contains(key));
+    }
+
 }

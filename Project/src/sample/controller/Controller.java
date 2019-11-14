@@ -5,16 +5,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.model.*;
+import sample.model.Cell;
 import sample.model.CellularAutomata.SimpleGrainGrowth;
+import sample.model.Neighbourhoods.Moore;
+import sample.model.Neighbourhoods.Neighbourhood;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -35,6 +35,7 @@ public class Controller implements Initializable {
     public RadioButton shapeControlOnOffId;
     public ComboBox structureTypeId;
     public TextField mySIZE1;
+    public ComboBox borderSizeId;
     @FXML  TextField numberCellsText;
     @FXML  TextField mySIZE;
     @FXML  Canvas canvas;
@@ -52,11 +53,12 @@ public class Controller implements Initializable {
     public static final int SCALE = 2;
     public static final String SEPARATOR = ";";
     boolean isClear = true;
-    private CellsSelector cellsSelector = new CellsSelector();
+    private CellsSelector cellsSelector;
+    private List<Cell> borderCells;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        mySIZE.setVisible(false);
+
         mySIZE1.setVisible(false);
         btnStart.setDisable(true);
         btnClear.setDisable(true);
@@ -67,8 +69,10 @@ public class Controller implements Initializable {
         inclusionTypeId.getItems().addAll("square","circle");
         inclusionTypeId.setValue("square");
         isClear = true;
-        structureTypeId.getItems().addAll("Substructure","Dual phase", "Disable");
-        structureTypeId.setValue("Disable");
+        structureTypeId.getItems().addAll("Substructure","Dual phase", "Disable", "None");
+        structureTypeId.setValue("None");
+        borderSizeId.getItems().addAll("0","1","2","3","4");
+        borderSizeId.setValue("0");
     }
 
     public void handleMouseClick(MouseEvent mouseEvent) {
@@ -164,6 +168,7 @@ public class Controller implements Initializable {
                 gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
                 prepareGrid();
             }
+        cellsSelector = new CellsSelector();
             setOfRandomCells.clear();
             numberOfGrains = Integer.parseInt(this.numberCellsText.getText());
             if (numberOfGrains < 2)
@@ -172,7 +177,13 @@ public class Controller implements Initializable {
                 throw new IllegalArgumentException("The maximum number of grains is size of the grid!");
 
             Nucleon.setNumberOfGrains(Nucleon.getNumberOfGrains() + numberOfGrains);
-            chooseGrainsColors();
+
+            if (Nucleon.getGrainsColors() == null || Nucleon.getGrainsColors().size() == 0) {
+                chooseGrainsColors();
+            }
+            else {
+                chooseGrainsColors(numberOfGrains);
+            }
 
             try {
                 chooseGrainsPosition(numberOfGrains);
@@ -259,6 +270,24 @@ public class Controller implements Initializable {
             grains.put(i, color);
         }
         Nucleon.setGrainsColors(grains);
+    }
+
+    public static void chooseGrainsColors(int numberOfGrains) {
+        Map<Integer, Color> mapWithColors = Nucleon.getGrainsColors();
+        int startSize = mapWithColors.size();
+        Random generator = new Random();
+        for (int i = startSize; i < startSize + numberOfGrains; i++) {
+            float r = generator.nextFloat();
+            float gg = generator.nextFloat();
+            float b = generator.nextFloat();
+
+            Color color = Color.color(r, gg, b);
+                if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || color.equals(Color.HOTPINK) || mapWithColors.containsValue(color)) {
+                    --i;
+                    continue;
+                }
+            mapWithColors.put(i, color);
+        }
     }
 
     public int RGBtoINT(float red, float green, float blue) {
@@ -525,13 +554,11 @@ public class Controller implements Initializable {
     private void generateSubstructure(ArrayList<Integer> selectedGrainsId) {
         deleteTheRestOfGrains(selectedGrainsId);
         Nucleon.setNumberOfGrains(selectedGrainsId.size());
-        colorAndStateSubstructure();
     }
 
     private void generateDualphase(ArrayList<Integer> selectedGrainsId) {
         deleteTheRestOfGrains(selectedGrainsId);
         Nucleon.setNumberOfGrains(1);
-        colorAndStateDualPhase();
     }
 
     private void deleteTheRestOfGrains(ArrayList<Integer> selectedGrainsId) {
@@ -569,10 +596,14 @@ public class Controller implements Initializable {
         newColors.put(0, Color.WHITE);
         newColors.put(1, Color.BLACK);
 
+        boolean once = true;
         for (Cell cell : Nucleon.getGrid().getGrid()) {
             if (cell.getState() != 0 && cell.getState() != 1) {
-                newColors.put(2, Nucleon.getColorForGrain(cell.getState()));
-                cell.setState(2);
+                if(once) {
+                    newColors.put(2, Nucleon.getColorForGrain(cell.getState()));
+                    once = false;
+                }
+                 cell.setState(2);
             }
         }
         Nucleon.setNumberOfSubstructures(1);
@@ -589,13 +620,21 @@ public class Controller implements Initializable {
                             isStructrureClicable = true;
                             btnStart.setDisable(false);
                             checkWhatTypeOfStructure(cellsSelector.getSelectedGrainsId(), true);
+                            cellsSelector.removeAllDeteted();
+                            cellsSelector.unselectAll();
+                            colorAndStateSubstructure();
                             shapeControlOnOffId.setSelected(false);
+                            cellsSelector = null;
                             print();
                         } else if (chosenStructure == "Dual phase"){
                             isStructrureClicable = true;
                             btnStart.setDisable(false);
                             checkWhatTypeOfStructure(cellsSelector.getSelectedGrainsId(), false);
+                            cellsSelector.removeAllDeteted();
+                            cellsSelector.unselectAll();
+                            colorAndStateDualPhase();
                             shapeControlOnOffId.setSelected(false);
+                            cellsSelector = null;
                             print();
                         } else if (chosenStructure == "Disable"){
                             isStructrureClicable = false;
@@ -606,5 +645,99 @@ public class Controller implements Initializable {
                     catch (NullPointerException exc) {
                         System.out.println("aaa");
                     }
+    }
+
+    public void lookForBorders(List<Cell> selectedCells, int chosenBorderSize) {
+        for (Cell cell : selectedCells) {
+            if (cell.getState() == 1 || cell.getState() == 0)
+                continue;
+            Neighbourhood neighbourhood = new Moore(cell);
+            for (Cell c : neighbourhood.getNeighbours() ) {
+                if ( c.getState() != cell.getState()) {
+                    borderCells.add(c);
+                    c.setState(1);
+                }
+            }
+        }
+        if (chosenBorderSize > 0)
+            makeBordersHeavy(chosenBorderSize);
+    }
+
+    private void makeBordersHeavy(int chosenBorderSize) {
+        List<Cell> changedCells = new ArrayList<>();
+
+        changedCells.addAll(Nucleon.getGrid().getGrid().stream().filter(cell -> cell.getState() == 1)
+                .collect(Collectors.toList()));
+
+        for (Cell cell : borderCells) {
+            List<Cell> firstCell = new ArrayList<>();
+            firstCell.add(cell);
+            oneMoveToChangeBorders(changedCells, firstCell, chosenBorderSize);
+        }
+    }
+
+    private List<Cell> oneMoveToChangeBorders(List<Cell> alreadyChanged, List<Cell> previousStep, int chosenBorderSize) {
+        if (chosenBorderSize > 0) {
+            Set<Cell> newNeighbourhood = new HashSet<>();
+
+            previousStep.forEach( previousStepCell ->
+                    newNeighbourhood.addAll(new Moore(previousStepCell).getNeighbours().stream().filter(
+                            neighbourCell -> !alreadyChanged.contains(neighbourCell)).collect(Collectors.toList())));
+
+            newNeighbourhood.forEach(c -> c.setState(1));
+            alreadyChanged.addAll(newNeighbourhood);
+            return oneMoveToChangeBorders(alreadyChanged, new ArrayList<>(newNeighbourhood), --chosenBorderSize);
+        }
+        else {
+            return alreadyChanged;
+        }
+    }
+
+    public void selectAllBtnAction(ActionEvent actionEvent) {
+        if (cellsSelector == null) {
+            System.out.println("select all null");
+        }
+        else {
+            if(!cellsSelector.checkIfAllSelected()) {
+                cellsSelector.selectAllGrains();
+            }
+            else {
+                cellsSelector.unselectAll();
+            }
+            print();
+        }
+    }
+
+    public void leaveBordersBtnAction(ActionEvent actionEvent) {
+        try{
+            if(cellsSelector.getSelectedCells().isEmpty()) {
+                throw new NullPointerException();
+            }
+            String chosenBorderSize = borderSizeId.getValue().toString();
+            borderCells = new ArrayList<>();
+            lookForBorders(cellsSelector.getSelectedCells(), Integer.parseInt(chosenBorderSize));
+            cellsSelector.unselectAll();
+            shapeControlOnOffId.setSelected(false);
+            cellsSelector = null;
+            print();
+        }
+        catch (NullPointerException exc) {
+            System.out.println("null w leave");
+        }
+    }
+
+    public void clearSpaceBtnAction(ActionEvent actionEvent) {
+        int borderCounter = 0;
+        List<Cell> grid = Nucleon.getGrid().getGrid();
+        for (Cell cell : grid) {
+          //  cell.setFutureState(0);
+            if (cell.getState() != 1)
+                cell.setState(0);
+            if (cell.getState() == 1)
+                borderCounter++;
+        }
+        print();
+        double boundaryPercentageOfAll = ((double) borderCounter) / grid.size() * 100;
+        System.out.println("Procent granic: " + boundaryPercentageOfAll + "%");
     }
 }

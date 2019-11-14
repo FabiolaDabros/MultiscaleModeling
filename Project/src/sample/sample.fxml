@@ -25,33 +25,37 @@
                         <Button fx:id="btnStart" mnemonicParsing="false" onAction="#startAction" prefHeight="200.0" prefWidth="400.0" text="Start" />
                         <!--<Button fx:id="btnStop" mnemonicParsing="false" onAction="#stopAction" prefHeight="200.0" prefWidth="400.0" text="Stop" />-->
                         <!--<Button fx:id="morePoints" mnemonicParsing="false" onAction="#morePointsAction" prefHeight="200.0" prefWidth="400.0" text="Dolosuj więcej punktów" />-->
-                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearAction" prefHeight="200.0" prefWidth="349.0" text="Clear" />
+                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearAction" prefHeight="200.0" prefWidth="400.0" text="Clear" />
                     </children>
                 </VBox>
                 <AnchorPane prefHeight="351.0" prefWidth="320.0">
                     <children>
-                        <Label layoutX="23.0" layoutY="41.0" text="Neighborhood" />
+                        <Label layoutX="20.0" layoutY="18.0" text="Neighborhood" />
                         <!--<Label layoutX="65.0" layoutY="129.0" text="Wybor punktow" />-->
-                        <ComboBox fx:id="neighborsCombo" layoutX="167.0" layoutY="37.0" prefHeight="25.0" prefWidth="125.0" />
+                        <ComboBox fx:id="neighborsCombo" layoutX="210.0" layoutY="14.0" prefHeight="25.0" prefWidth="125.0" />
                         <!--<ComboBox fx:id="pointsCombo" layoutX="33.0" layoutY="176.0" prefWidth="150.0" />-->
-                        <RadioButton fx:id="periodicBtn" layoutX="212.0" layoutY="88.0" mnemonicParsing="false" text="ON/OFF" />
-                        <Label layoutX="25.0" layoutY="88.0" text="Periodic boundary condition" />
-                  <Label layoutX="23.0" layoutY="143.0" text="Amount of inclusions" />
-                  <Label layoutX="23.0" layoutY="181.0" text="Size of inclusions" />
-                  <Label layoutX="23.0" layoutY="222.0" text="Type of inclusion" />
-                  <TextField fx:id="inclusionsId" layoutX="169.0" layoutY="139.0" prefHeight="25.0" prefWidth="120.0" text="10" />
-                  <TextField fx:id="mySIZE" layoutX="135.0" layoutY="2.0" prefHeight="25.0" prefWidth="210.0" />
-                  <TextField fx:id="inclusionsSizeId" layoutX="169.0" layoutY="177.0" prefHeight="25.0" prefWidth="120.0" text="2" />
-                  <ComboBox fx:id="inclusionTypeId" layoutX="168.0" layoutY="218.0" prefHeight="25.0" prefWidth="122.0" />
-                  <Button fx:id="inclusionsAddBtn" layoutX="121.0" layoutY="256.0" mnemonicParsing="false" onAction="#inclusionsAddAction" text="Add inclusions" />
-                  <Label layoutX="23.0" layoutY="346.0" text="Shape percentage" />
-                  <TextField fx:id="shapePercentageId" layoutX="168.0" layoutY="342.0" prefHeight="25.0" prefWidth="128.0" text="50" />
-                  <Label layoutX="26.0" layoutY="306.0" text="Shape control" />
-                  <RadioButton fx:id="shapeControlOnOffId" layoutX="214.0" layoutY="306.0" mnemonicParsing="false" text="ON/OFF" />
-                   <Label layoutX="26.0" layoutY="398.0" text="Structure" />
-                  <ComboBox fx:id="structureTypeId" layoutX="167.0" layoutY="394.0" prefHeight="25.0" prefWidth="129.0" />
-                  <Button fx:id="clearStructureBtnId" layoutX="121.0" layoutY="437.0" mnemonicParsing="false" onAction="#clearStructureBtn" text="Show selected" />
-                  <TextField fx:id="mySIZE1" layoutX="110.0" layoutY="449.0" prefHeight="25.0" prefWidth="210.0" />
+                        <RadioButton fx:id="periodicBtn" layoutX="217.0" layoutY="52.0" mnemonicParsing="false" text="ON/OFF" />
+                        <Label layoutX="21.0" layoutY="52.0" text="Periodic boundary condition" />
+                  <Label layoutX="22.0" layoutY="96.0" text="Amount of inclusions" />
+                  <Label layoutX="22.0" layoutY="134.0" text="Size of inclusions" />
+                  <Label layoutX="22.0" layoutY="175.0" text="Type of inclusion" />
+                  <TextField fx:id="inclusionsId" layoutX="168.0" layoutY="92.0" prefHeight="25.0" prefWidth="90.0" text="10" />
+                  <TextField fx:id="inclusionsSizeId" layoutX="168.0" layoutY="130.0" prefHeight="25.0" prefWidth="90.0" text="2" />
+                  <ComboBox fx:id="inclusionTypeId" layoutX="167.0" layoutY="171.0" prefHeight="25.0" prefWidth="89.0" />
+                  <Button fx:id="inclusionsAddBtn" layoutX="275.0" layoutY="113.0" mnemonicParsing="false" onAction="#inclusionsAddAction" prefHeight="59.0" prefWidth="61.0" text="Add" textAlignment="CENTER" />
+                  <Label layoutX="24.0" layoutY="261.0" text="Shape percentage" />
+                  <TextField fx:id="shapePercentageId" layoutX="170.0" layoutY="257.0" prefHeight="25.0" prefWidth="128.0" text="50" />
+                  <Label layoutX="22.0" layoutY="226.0" text="Shape control" />
+                  <RadioButton fx:id="shapeControlOnOffId" layoutX="220.0" layoutY="226.0" mnemonicParsing="false" text="ON/OFF" />
+                   <Label layoutX="22.0" layoutY="323.0" text="Structure" />
+                  <ComboBox fx:id="structureTypeId" layoutX="89.0" layoutY="319.0" prefHeight="25.0" prefWidth="117.0" />
+                  <Button fx:id="clearStructureBtnId" layoutX="217.0" layoutY="313.0" mnemonicParsing="false" onAction="#clearStructureBtn" prefHeight="25.0" prefWidth="137.0" text="Show selected" />
+                  <TextField fx:id="mySIZE1" layoutX="153.0" layoutY="458.0" prefHeight="25.0" prefWidth="210.0" />
+                  <Button fx:id="selectAllBtnId" layoutX="24.0" layoutY="428.0" mnemonicParsing="false" onAction="#selectAllBtnAction" prefHeight="25.0" prefWidth="141.0" text="Select all grains " />
+                  <Button fx:id="leaveBordersBtnId" layoutX="218.0" layoutY="374.0" mnemonicParsing="false" onAction="#leaveBordersBtnAction" prefHeight="25.0" prefWidth="134.0" text="Leave  borders" />
+                  <Button fx:id="clearSpaceBtnId" layoutX="227.0" layoutY="428.0" mnemonicParsing="false" onAction="#clearSpaceBtnAction" prefHeight="25.0" prefWidth="114.0" text="Clear space" />
+                  <ComboBox fx:id="borderSizeId" layoutX="103.0" layoutY="382.0" prefHeight="25.0" prefWidth="88.0" />
+                  <Label layoutX="28.0" layoutY="386.0" text="Border size" />
                     </children>
                 </AnchorPane>
             </children>
