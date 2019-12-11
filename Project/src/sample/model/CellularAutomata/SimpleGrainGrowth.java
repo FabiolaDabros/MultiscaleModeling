@@ -35,7 +35,7 @@ public class SimpleGrainGrowth {
         furtherMoore = new FurtherMoore(cell);
     }
 
-    public void checkNeighbourhoodMoore(Cell c) {
+    public boolean checkNeighbourhoodMoore(Cell c) {
         shapeControlNeighbourhood(c);
         HashMap<Integer, Integer> statesOfCellsAround = new HashMap<>();
         for (Cell n : getMoore().getNeighbours()) {
@@ -88,6 +88,7 @@ public class SimpleGrainGrowth {
                 }
             }
         }
+        return true;
     }
 
     public void growGrains(String neighbourhood, Boolean shapeControl) {
@@ -101,17 +102,22 @@ public class SimpleGrainGrowth {
             List<Cell> changed = new ArrayList<>();
             for (Cell c : grid) {
                 if (c.getState() == 0) {
-                    repeat = true;
                     if(shapeControl && neighbourhood == ("Moore")) {
-                        checkNeighbourhoodMoore(c);
+                        if(checkNeighbourhoodMoore(c)){
+                            changed.add(c);
+                        }
                     } else {
-                        checkNeighbourhood(c);
+                        if(checkNeighbourhood(c)) {
+                            changed.add(c);
+                        }
                     }
-                    changed.add(c);
                 }
             }
-            for (Cell c : changed) {
-                c.setState(c.getFutureState());
+            if (!changed.isEmpty()) {
+                repeat = true;
+                for (Cell c : changed) {
+                    c.setState(c.getFutureState());
+                }
             }
         }
     }
@@ -130,10 +136,11 @@ public class SimpleGrainGrowth {
         }
     }
 
-    private void checkNeighbourhood(Cell c) {
+    private boolean checkNeighbourhood(Cell c) {
 
         List<Cell> neighbours = c.getNeighbourhood().getNeighbours();
         HashMap<Integer, Integer> statesAround = new HashMap<>();
+        boolean changedCell = false;
         for (Cell n : neighbours) {
             if (n.getState() > 1 + Nucleon.getNumberOfSubstructures())
                 statesAround.merge(n.getState(), 1, Integer::sum);
@@ -145,7 +152,9 @@ public class SimpleGrainGrowth {
                     maxEntry = entry;
             }
             c.setFutureState(maxEntry.getKey());
+            changedCell = true;
         }
+        return changedCell;
     }
 
     public FurtherMoore getFurtherMoore() {

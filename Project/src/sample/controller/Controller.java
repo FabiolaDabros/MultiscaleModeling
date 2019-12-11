@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import sample.model.*;
 import sample.model.Cell;
 import sample.model.CellularAutomata.SimpleGrainGrowth;
+import sample.model.MonteCarlo.MonteCarloGrowth;
 import sample.model.Neighbourhoods.Moore;
 import sample.model.Neighbourhoods.Neighbourhood;
 
@@ -36,6 +37,25 @@ public class Controller implements Initializable {
     public ComboBox structureTypeId;
     public TextField mySIZE1;
     public ComboBox borderSizeId;
+    public CheckBox mcCheckboxId;
+    public Label LabelBorderSizeId;
+    public Label labelneighbourhoodId;
+    public Label periodicId;
+    public Label labelInclusionId;
+    public Label labelsizeinclusionId;
+    public Label labeltypeinclusionId;
+    public Button inclusionsAddBtn;
+    public Label labelShapePercentageId;
+    public Label labelShapeId;
+    public Label labelStructureId;
+    public Button clearStructureBtnId;
+    public Button selectAllBtnId;
+    public Button leaveBordersBtnId;
+    public Button clearSpaceBtnId;
+    public Label labelMCStepsId;
+    public Label labelJId;
+    public TextField mcStepsId;
+    public TextField mcJid;
     @FXML  TextField numberCellsText;
     @FXML  TextField mySIZE;
     @FXML  Canvas canvas;
@@ -58,7 +78,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        hideMC(false);
         mySIZE1.setVisible(false);
         btnStart.setDisable(true);
         btnClear.setDisable(true);
@@ -164,11 +184,13 @@ public class Controller implements Initializable {
     }
 
     public void randCellAction(ActionEvent actionEvent) {
+        if(!mcCheckboxId.isSelected()) {
+            System.out.println("Automaty komorkowe");
             if (Nucleon.getGrid() == null) {
                 gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
                 prepareGrid();
             }
-        cellsSelector = new CellsSelector();
+            cellsSelector = new CellsSelector();
             setOfRandomCells.clear();
             numberOfGrains = Integer.parseInt(this.numberCellsText.getText());
             if (numberOfGrains < 2)
@@ -180,8 +202,7 @@ public class Controller implements Initializable {
 
             if (Nucleon.getGrainsColors() == null || Nucleon.getGrainsColors().size() == 0) {
                 chooseGrainsColors();
-            }
-            else {
+            } else {
                 chooseGrainsColors(numberOfGrains);
             }
 
@@ -196,6 +217,44 @@ public class Controller implements Initializable {
 
             btnStart.setDisable(false);
             btnClear.setDisable(false);
+        } else {
+            System.out.println("monte carlo");
+            if (Nucleon.getGrid() == null) {
+                gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+                prepareGrid();
+            }
+                 cellsSelector = new CellsSelector();
+                 setOfRandomCells.clear();
+                int numberOfGrains = Integer.parseInt(numberCellsText.getText());
+                if (numberOfGrains < 2)
+                    throw new IllegalArgumentException("The minimum number of grains is 2");
+                if (numberOfGrains > Nucleon.getGrid().getGrid().size())
+                    throw new IllegalArgumentException("The maximum number of grains is size of the grid!");
+
+                int monteCarloSteps = Integer.parseInt(mcStepsId.getText());
+                if (monteCarloSteps < 1)
+                    throw new IllegalArgumentException("The minimum number of steps is 1");
+
+                float coefficientJ = Float.parseFloat(mcJid.getText());
+                if (coefficientJ < 0.1)
+                    throw new IllegalArgumentException("J is from 0.1 to 1");
+                else if(coefficientJ > 1.0)
+                    throw new IllegalArgumentException("J is from 0.1 to 1");
+
+                Nucleon.setNumberOfGrains(Nucleon.getNumberOfGrains() + numberOfGrains);
+
+                if (Nucleon.getGrainsColors() == null || Nucleon.getGrainsColors().size() == 0)
+                    chooseGrainsColors();
+                else
+                    chooseGrainsColors(numberOfGrains);
+
+                MonteCarloGrowth growth = new MonteCarloGrowth(numberOfGrains, coefficientJ, monteCarloSteps);
+                growth.growGrains("Moore");
+
+                print();
+
+            btnClear.setDisable(false);
+        }
     }
 
     private void prepareGrid() {
@@ -276,7 +335,7 @@ public class Controller implements Initializable {
         Map<Integer, Color> mapWithColors = Nucleon.getGrainsColors();
         int startSize = mapWithColors.size();
         Random generator = new Random();
-        for (int i = startSize; i < startSize + numberOfGrains; i++) {
+        for (int i = startSize; i < startSize + numberOfGrains+1; i++) {
             float r = generator.nextFloat();
             float gg = generator.nextFloat();
             float b = generator.nextFloat();
@@ -739,5 +798,48 @@ public class Controller implements Initializable {
         print();
         double boundaryPercentageOfAll = ((double) borderCounter) / grid.size() * 100;
         System.out.println("Procent granic: " + boundaryPercentageOfAll + "%");
+    }
+
+    public void mcCheckboxAction(ActionEvent actionEvent) {
+        if(mcCheckboxId.isSelected()){
+           hideCA(false);
+           hideMC(true);
+        } else {
+            hideCA(true);
+            hideMC(false);
+        }
+    }
+
+    private void hideCA(boolean value){
+      //  LabelBorderSizeId.setVisible(value);
+      //  borderSizeId.setVisible(value);
+       // clearSpaceBtnId.setVisible(value);
+       // leaveBordersBtnId.setVisible(value);
+       // selectAllBtnId.setVisible(value);
+       // clearStructureBtnId.setVisible(value);
+       // structureTypeId.setVisible(value);
+       // labelStructureId.setVisible(value);
+        shapeControlOnOffId.setVisible(value);
+        labelShapeId.setVisible(value);
+        shapePercentageId.setVisible(value);
+        labelShapePercentageId.setVisible(value);
+        inclusionsAddBtn.setVisible(value);
+        inclusionTypeId.setVisible(value);
+        inclusionsSizeId.setVisible(value);
+        inclusionsId.setVisible(value);
+        labeltypeinclusionId.setVisible(value);
+        labelsizeinclusionId.setVisible(value);
+        labelInclusionId.setVisible(value);
+      //  periodicId.setVisible(value);
+       // periodicBtn.setVisible(value);
+        neighborsCombo.setVisible(value);
+        labelneighbourhoodId.setVisible(value);
+    }
+
+    private void hideMC(boolean value) {
+        labelJId.setVisible(value);
+        mcStepsId.setVisible(value);
+        mcJid.setVisible(value);
+        labelMCStepsId.setVisible(value);
     }
 }

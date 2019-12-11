@@ -2,6 +2,7 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -30,24 +31,24 @@
                 </VBox>
                 <AnchorPane prefHeight="351.0" prefWidth="320.0">
                     <children>
-                        <Label layoutX="20.0" layoutY="18.0" text="Neighborhood" />
+                        <Label fx:id="labelneighbourhoodId" layoutX="20.0" layoutY="18.0" text="Neighborhood" />
                         <!--<Label layoutX="65.0" layoutY="129.0" text="Wybor punktow" />-->
                         <ComboBox fx:id="neighborsCombo" layoutX="210.0" layoutY="14.0" prefHeight="25.0" prefWidth="125.0" />
                         <!--<ComboBox fx:id="pointsCombo" layoutX="33.0" layoutY="176.0" prefWidth="150.0" />-->
                         <RadioButton fx:id="periodicBtn" layoutX="217.0" layoutY="52.0" mnemonicParsing="false" text="ON/OFF" />
-                        <Label layoutX="21.0" layoutY="52.0" text="Periodic boundary condition" />
-                  <Label layoutX="22.0" layoutY="96.0" text="Amount of inclusions" />
-                  <Label layoutX="22.0" layoutY="134.0" text="Size of inclusions" />
-                  <Label layoutX="22.0" layoutY="175.0" text="Type of inclusion" />
+                        <Label fx:id="periodicId" layoutX="21.0" layoutY="52.0" text="Periodic boundary condition" />
+                  <Label fx:id="labelInclusionId" layoutX="22.0" layoutY="96.0" text="Amount of inclusions" />
+                  <Label fx:id="labelsizeinclusionId" layoutX="22.0" layoutY="134.0" text="Size of inclusions" />
+                  <Label fx:id="labeltypeinclusionId" layoutX="22.0" layoutY="175.0" text="Type of inclusion" />
                   <TextField fx:id="inclusionsId" layoutX="168.0" layoutY="92.0" prefHeight="25.0" prefWidth="90.0" text="10" />
                   <TextField fx:id="inclusionsSizeId" layoutX="168.0" layoutY="130.0" prefHeight="25.0" prefWidth="90.0" text="2" />
                   <ComboBox fx:id="inclusionTypeId" layoutX="167.0" layoutY="171.0" prefHeight="25.0" prefWidth="89.0" />
                   <Button fx:id="inclusionsAddBtn" layoutX="275.0" layoutY="113.0" mnemonicParsing="false" onAction="#inclusionsAddAction" prefHeight="59.0" prefWidth="61.0" text="Add" textAlignment="CENTER" />
-                  <Label layoutX="24.0" layoutY="261.0" text="Shape percentage" />
+                  <Label fx:id="labelShapePercentageId" layoutX="24.0" layoutY="261.0" text="Shape percentage" />
                   <TextField fx:id="shapePercentageId" layoutX="170.0" layoutY="257.0" prefHeight="25.0" prefWidth="128.0" text="50" />
-                  <Label layoutX="22.0" layoutY="226.0" text="Shape control" />
+                  <Label fx:id="labelShapeId" layoutX="22.0" layoutY="226.0" text="Shape control" />
                   <RadioButton fx:id="shapeControlOnOffId" layoutX="220.0" layoutY="226.0" mnemonicParsing="false" text="ON/OFF" />
-                   <Label layoutX="22.0" layoutY="323.0" text="Structure" />
+                   <Label fx:id="labelStructureId" layoutX="22.0" layoutY="323.0" text="Structure" />
                   <ComboBox fx:id="structureTypeId" layoutX="89.0" layoutY="319.0" prefHeight="25.0" prefWidth="117.0" />
                   <Button fx:id="clearStructureBtnId" layoutX="217.0" layoutY="313.0" mnemonicParsing="false" onAction="#clearStructureBtn" prefHeight="25.0" prefWidth="137.0" text="Show selected" />
                   <TextField fx:id="mySIZE1" layoutX="153.0" layoutY="458.0" prefHeight="25.0" prefWidth="210.0" />
@@ -55,7 +56,11 @@
                   <Button fx:id="leaveBordersBtnId" layoutX="218.0" layoutY="374.0" mnemonicParsing="false" onAction="#leaveBordersBtnAction" prefHeight="25.0" prefWidth="134.0" text="Leave  borders" />
                   <Button fx:id="clearSpaceBtnId" layoutX="227.0" layoutY="428.0" mnemonicParsing="false" onAction="#clearSpaceBtnAction" prefHeight="25.0" prefWidth="114.0" text="Clear space" />
                   <ComboBox fx:id="borderSizeId" layoutX="103.0" layoutY="382.0" prefHeight="25.0" prefWidth="88.0" />
-                  <Label layoutX="28.0" layoutY="386.0" text="Border size" />
+                  <Label fx:id="LabelBorderSizeId" layoutX="28.0" layoutY="386.0" text="Border size" />
+                  <Label fx:id="labelMCStepsId" layoutX="22.0" layoutY="96.0" prefHeight="17.0" prefWidth="112.0" text="Monte Carlo steps" />
+                  <Label fx:id="labelJId" layoutX="24.0" layoutY="134.0" prefHeight="17.0" prefWidth="92.0" text="Coefficient J" />
+                  <TextField fx:id="mcStepsId" text="10" layoutX="178.0" layoutY="92.0" prefHeight="25.0" prefWidth="96.0" />
+                  <TextField fx:id="mcJid" text="1" layoutX="178.0" layoutY="130.0" prefHeight="25.0" prefWidth="95.0" />
                     </children>
                 </AnchorPane>
             </children>
@@ -65,7 +70,7 @@
         <AnchorPane prefHeight="53.0" prefWidth="706.0" BorderPane.alignment="CENTER">
             <children>
                 <Label layoutX="507.0" layoutY="24.0" text="Amount of grains" />
-                <TextField fx:id="numberCellsText" layoutX="618.0" layoutY="12.0" prefHeight="25.0" prefWidth="79.0" text="50" />
+                <TextField fx:id="numberCellsText" layoutX="618.0" layoutY="12.0" prefHeight="25.0" prefWidth="79.0" text="5" />
                 <Label layoutX="150.0" layoutY="23.0" text="Width" />
                 <TextField fx:id="widthText" layoutX="195.0" layoutY="11.0" prefHeight="25.0" prefWidth="78.0" text="300" />
                 <!--<Label layoutX="780.0" layoutY="30.0" text="Promień" />-->
@@ -96,6 +101,7 @@
                   </MenuItem>
               </items>
             </MenuButton>
+            <CheckBox fx:id="mcCheckboxId" layoutX="92.0" layoutY="18.0" mnemonicParsing="false" onAction="#mcCheckboxAction" text="MC" />
             </children></AnchorPane>
     </top>
     <center>
