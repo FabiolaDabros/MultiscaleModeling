@@ -9,6 +9,8 @@ public class Cell {
     private int id;
     private int futureState;
     private Neighbourhood neighbourhood;
+    private float energy;
+    private boolean isRecrystal;
 
     public Cell(int x, int y) {
         this.x = x;
@@ -55,4 +57,20 @@ public class Cell {
         this.futureState = futureState;
     }
 
+    public float getEnergy() {
+        return energy;
     }
+
+    public void setEnergy(float energy) {
+        this.energy = energy;
+    }
+
+    public boolean isRecrystal() {
+        return isRecrystal;
+    }
+
+    public void setRecrystal(boolean recrystal) {
+        this.isRecrystal = recrystal;
+    }
+    }
+

@@ -22,11 +22,11 @@
             <children>
                 <VBox prefHeight="219.0" prefWidth="215.0">
                     <children>
-                        <Button fx:id="btnRand" mnemonicParsing="false" onAction="#randCellAction" prefHeight="200.0" prefWidth="400.0" text="Generate" />
-                        <Button fx:id="btnStart" mnemonicParsing="false" onAction="#startAction" prefHeight="200.0" prefWidth="400.0" text="Start" />
+                        <Button fx:id="btnRand" mnemonicParsing="false" onAction="#randCellAction" prefHeight="50.0" prefWidth="550.0" text="Generate" />
+                        <Button fx:id="btnStart" mnemonicParsing="false" onAction="#startAction" prefHeight="50.0" prefWidth="550.0" text="Start" />
                         <!--<Button fx:id="btnStop" mnemonicParsing="false" onAction="#stopAction" prefHeight="200.0" prefWidth="400.0" text="Stop" />-->
                         <!--<Button fx:id="morePoints" mnemonicParsing="false" onAction="#morePointsAction" prefHeight="200.0" prefWidth="400.0" text="Dolosuj więcej punktów" />-->
-                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearAction" prefHeight="200.0" prefWidth="400.0" text="Clear" />
+                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearAction" prefHeight="50.0" prefWidth="550.0" text="Clear" />
                     </children>
                 </VBox>
                 <AnchorPane prefHeight="351.0" prefWidth="320.0">
@@ -35,32 +35,50 @@
                         <!--<Label layoutX="65.0" layoutY="129.0" text="Wybor punktow" />-->
                         <ComboBox fx:id="neighborsCombo" layoutX="210.0" layoutY="14.0" prefHeight="25.0" prefWidth="125.0" />
                         <!--<ComboBox fx:id="pointsCombo" layoutX="33.0" layoutY="176.0" prefWidth="150.0" />-->
-                        <RadioButton fx:id="periodicBtn" layoutX="217.0" layoutY="52.0" mnemonicParsing="false" text="ON/OFF" />
-                        <Label fx:id="periodicId" layoutX="21.0" layoutY="52.0" text="Periodic boundary condition" />
-                  <Label fx:id="labelInclusionId" layoutX="22.0" layoutY="96.0" text="Amount of inclusions" />
-                  <Label fx:id="labelsizeinclusionId" layoutX="22.0" layoutY="134.0" text="Size of inclusions" />
-                  <Label fx:id="labeltypeinclusionId" layoutX="22.0" layoutY="175.0" text="Type of inclusion" />
-                  <TextField fx:id="inclusionsId" layoutX="168.0" layoutY="92.0" prefHeight="25.0" prefWidth="90.0" text="10" />
-                  <TextField fx:id="inclusionsSizeId" layoutX="168.0" layoutY="130.0" prefHeight="25.0" prefWidth="90.0" text="2" />
-                  <ComboBox fx:id="inclusionTypeId" layoutX="167.0" layoutY="171.0" prefHeight="25.0" prefWidth="89.0" />
-                  <Button fx:id="inclusionsAddBtn" layoutX="275.0" layoutY="113.0" mnemonicParsing="false" onAction="#inclusionsAddAction" prefHeight="59.0" prefWidth="61.0" text="Add" textAlignment="CENTER" />
-                  <Label fx:id="labelShapePercentageId" layoutX="24.0" layoutY="261.0" text="Shape percentage" />
-                  <TextField fx:id="shapePercentageId" layoutX="170.0" layoutY="257.0" prefHeight="25.0" prefWidth="128.0" text="50" />
-                  <Label fx:id="labelShapeId" layoutX="22.0" layoutY="226.0" text="Shape control" />
-                  <RadioButton fx:id="shapeControlOnOffId" layoutX="220.0" layoutY="226.0" mnemonicParsing="false" text="ON/OFF" />
-                   <Label fx:id="labelStructureId" layoutX="22.0" layoutY="323.0" text="Structure" />
-                  <ComboBox fx:id="structureTypeId" layoutX="89.0" layoutY="319.0" prefHeight="25.0" prefWidth="117.0" />
-                  <Button fx:id="clearStructureBtnId" layoutX="217.0" layoutY="313.0" mnemonicParsing="false" onAction="#clearStructureBtn" prefHeight="25.0" prefWidth="137.0" text="Show selected" />
+                        <RadioButton fx:id="periodicBtn" layoutX="216.0" layoutY="53.0" mnemonicParsing="false" text="ON/OFF" />
+                        <Label fx:id="periodicId" layoutX="20.0" layoutY="53.0" text="Periodic boundary condition" />
+                  <Label fx:id="labelInclusionId" layoutX="21.0" layoutY="91.0" text="Amount of inclusions" />
+                  <Label fx:id="labelsizeinclusionId" layoutX="282.0" layoutY="91.0" text="Size of inclusions" />
+                  <Label fx:id="labeltypeinclusionId" layoutX="17.0" layoutY="136.0" text="Type of inclusion" />
+                  <TextField fx:id="inclusionsId" layoutX="167.0" layoutY="87.0" prefHeight="25.0" prefWidth="90.0" text="10" />
+                  <TextField fx:id="inclusionsSizeId" layoutX="409.0" layoutY="87.0" prefHeight="25.0" prefWidth="90.0" text="2" />
+                  <ComboBox fx:id="inclusionTypeId" layoutX="167.0" layoutY="132.0" prefHeight="25.0" prefWidth="89.0" />
+                  <Button fx:id="inclusionsAddBtn" layoutX="318.0" layoutY="132.0" mnemonicParsing="false" onAction="#inclusionsAddAction" prefHeight="19.0" prefWidth="135.0" text="Add inclusions" textAlignment="CENTER" />
+                  <Label fx:id="labelShapePercentageId" layoutX="31.0" layoutY="282.0" text="Shape percentage" />
+                  <TextField fx:id="shapePercentageId" layoutX="176.0" layoutY="278.0" prefHeight="25.0" prefWidth="128.0" text="50" />
+                  <Label fx:id="labelShapeId" layoutX="31.0" layoutY="234.0" text="Shape control" />
+                  <RadioButton fx:id="shapeControlOnOffId" layoutX="221.0" layoutY="234.0" mnemonicParsing="false" text="ON/OFF" />
+                   <Label fx:id="labelStructureId" layoutX="20.0" layoutY="399.0" text="Structure" />
+                  <ComboBox fx:id="structureTypeId" layoutX="87.0" layoutY="395.0" prefHeight="25.0" prefWidth="117.0" />
+                  <Button fx:id="clearStructureBtnId" layoutX="215.0" layoutY="389.0" mnemonicParsing="false" onAction="#clearStructureBtn" prefHeight="25.0" prefWidth="137.0" text="Show selected" />
                   <TextField fx:id="mySIZE1" layoutX="153.0" layoutY="458.0" prefHeight="25.0" prefWidth="210.0" />
-                  <Button fx:id="selectAllBtnId" layoutX="24.0" layoutY="428.0" mnemonicParsing="false" onAction="#selectAllBtnAction" prefHeight="25.0" prefWidth="141.0" text="Select all grains " />
-                  <Button fx:id="leaveBordersBtnId" layoutX="218.0" layoutY="374.0" mnemonicParsing="false" onAction="#leaveBordersBtnAction" prefHeight="25.0" prefWidth="134.0" text="Leave  borders" />
-                  <Button fx:id="clearSpaceBtnId" layoutX="227.0" layoutY="428.0" mnemonicParsing="false" onAction="#clearSpaceBtnAction" prefHeight="25.0" prefWidth="114.0" text="Clear space" />
-                  <ComboBox fx:id="borderSizeId" layoutX="103.0" layoutY="382.0" prefHeight="25.0" prefWidth="88.0" />
-                  <Label fx:id="LabelBorderSizeId" layoutX="28.0" layoutY="386.0" text="Border size" />
-                  <Label fx:id="labelMCStepsId" layoutX="22.0" layoutY="96.0" prefHeight="17.0" prefWidth="112.0" text="Monte Carlo steps" />
-                  <Label fx:id="labelJId" layoutX="24.0" layoutY="134.0" prefHeight="17.0" prefWidth="92.0" text="Coefficient J" />
-                  <TextField fx:id="mcStepsId" text="10" layoutX="178.0" layoutY="92.0" prefHeight="25.0" prefWidth="96.0" />
-                  <TextField fx:id="mcJid" text="1" layoutX="178.0" layoutY="130.0" prefHeight="25.0" prefWidth="95.0" />
+                  <Button fx:id="selectAllBtnId" layoutX="368.0" layoutY="389.0" mnemonicParsing="false" onAction="#selectAllBtnAction" prefHeight="25.0" prefWidth="141.0" text="Select all grains " />
+                  <Button fx:id="leaveBordersBtnId" layoutX="213.0" layoutY="436.0" mnemonicParsing="false" onAction="#leaveBordersBtnAction" prefHeight="25.0" prefWidth="134.0" text="Leave  borders" />
+                  <Button fx:id="clearSpaceBtnId" layoutX="382.0" layoutY="436.0" mnemonicParsing="false" onAction="#clearSpaceBtnAction" prefHeight="25.0" prefWidth="114.0" text="Clear space" />
+                  <ComboBox fx:id="borderSizeId" layoutX="98.0" layoutY="444.0" prefHeight="25.0" prefWidth="88.0" />
+                  <Label fx:id="LabelBorderSizeId" layoutX="23.0" layoutY="448.0" text="Border size" />
+                  <Label fx:id="labelMCStepsId" layoutX="19.0" layoutY="10.0" prefHeight="17.0" prefWidth="112.0" text="Monte Carlo steps" />
+                  <Label fx:id="labelJId" layoutX="294.0" layoutY="10.0" prefHeight="17.0" prefWidth="92.0" text="Coefficient J" />
+                  <TextField fx:id="mcStepsId" layoutX="156.0" layoutY="6.0" prefHeight="25.0" prefWidth="96.0" text="10" />
+                  <TextField fx:id="mcJid" layoutX="394.0" layoutY="6.0" prefHeight="25.0" prefWidth="95.0" text="1" />
+                  <ComboBox fx:id="energyDistributionComboId" layoutX="161.0" layoutY="246.0" prefHeight="25.0" prefWidth="150.0" />
+                  <ComboBox fx:id="nucleationLocationComboId" layoutX="159.0" layoutY="294.0" prefHeight="25.0" prefWidth="107.0" />
+                  <ComboBox fx:id="nucleationTypeComboId" layoutX="388.0" layoutY="294.0" prefHeight="25.0" prefWidth="100.0" />
+                  <TextField fx:id="energyInsideTextId" layoutX="19.0" layoutY="204.0" prefHeight="25.0" prefWidth="99.0" text="5" />
+                  <TextField fx:id="energyEdgesTextId" layoutX="187.0" layoutY="204.0" prefHeight="25.0" prefWidth="107.0" text="10" />
+                  <TextField fx:id="energyTresholdTextId" layoutX="360.0" layoutY="204.0" prefHeight="25.0" prefWidth="100.0" text="50" />
+                  <TextField fx:id="nucleationAmountTextId" layoutX="137.0" layoutY="339.0" prefHeight="25.0" prefWidth="78.0" text="5" />
+                  <TextField fx:id="mcSRXTextId" layoutX="303.0" layoutY="339.0" prefHeight="25.0" prefWidth="49.0" text="10" />
+                  <Button fx:id="growthSRXBtnId" layoutX="373.0" layoutY="339.0" mnemonicParsing="false" onAction="#growthSRXBtnAction" prefHeight="25.0" prefWidth="115.0" text="Growth SRX" />
+                  <Button fx:id="energyDistributionBtnId" layoutX="351.0" layoutY="246.0" mnemonicParsing="false" onAction="#energyDistributionBtnAction" text="Energy distribution" />
+                  <Label fx:id="energyInsideLabelId" layoutX="22.0" layoutY="177.0" text="Energy inside" />
+                  <Label fx:id="edgesEnergyLabelId" layoutX="194.0" layoutY="177.0" text="Energy on edges " />
+                  <Label fx:id="EnefryTresholdLabelId" layoutX="368.0" layoutY="177.0" text="Energy treshold" />
+                  <Label fx:id="EnergyDistrubutionLabelId" layoutX="21.0" layoutY="250.0" text="Energy distribution" />
+                  <Label fx:id="nucleationLocationLabelId" layoutX="22.0" layoutY="298.0" text="Nucleation location" />
+                  <Label fx:id="nucleationTypeLabelId" layoutX="284.0" layoutY="298.0" text="Nucleation Type" />
+                  <Label fx:id="nucleationOnStartLabelId" layoutX="22.0" layoutY="352.0" text="Nucleons on start" />
+                  <Label fx:id="iterationLabelId" layoutX="234.0" layoutY="352.0" text="Iterations" />
                     </children>
                 </AnchorPane>
             </children>

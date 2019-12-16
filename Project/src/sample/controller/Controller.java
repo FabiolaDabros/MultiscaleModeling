@@ -6,6 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -16,10 +19,12 @@ import sample.model.CellularAutomata.SimpleGrainGrowth;
 import sample.model.MonteCarlo.MonteCarloGrowth;
 import sample.model.Neighbourhoods.Moore;
 import sample.model.Neighbourhoods.Neighbourhood;
+import sample.model.SRX.SRX;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.List;
 import java.util.Random;
 
 import java.net.URL;
@@ -56,6 +61,24 @@ public class Controller implements Initializable {
     public Label labelJId;
     public TextField mcStepsId;
     public TextField mcJid;
+    public ComboBox energyDistributionComboId;
+    public ComboBox nucleationLocationComboId;
+    public ComboBox nucleationTypeComboId;
+    public TextField energyInsideTextId;
+    public TextField energyEdgesTextId;
+    public TextField energyTresholdTextId;
+    public TextField nucleationAmountTextId;
+    public TextField mcSRXTextId;
+    public Button growthSRXBtnId;
+    public Button energyDistributionBtnId;
+    public Label energyInsideLabelId;
+    public Label edgesEnergyLabelId;
+    public Label EnefryTresholdLabelId;
+    public Label EnergyDistrubutionLabelId;
+    public Label nucleationLocationLabelId;
+    public Label nucleationTypeLabelId;
+    public Label nucleationOnStartLabelId;
+    public Label iterationLabelId;
     @FXML  TextField numberCellsText;
     @FXML  TextField mySIZE;
     @FXML  Canvas canvas;
@@ -67,6 +90,7 @@ public class Controller implements Initializable {
     public Boolean isStructrureClicable = false;
 
     public GraphicsContext gc;
+    public GraphicsContext gcEnergy;
     private int numberOfGrains;
     private Set<Integer> setOfRandomCells = new HashSet<>();
     private static final int TOP_PADDING = 0;
@@ -75,6 +99,12 @@ public class Controller implements Initializable {
     boolean isClear = true;
     private CellsSelector cellsSelector;
     private List<Cell> borderCells;
+
+
+    private final float hueMinimum = 135f/360;
+    private final float hueMaximum = 225f/360;
+    private float energyMinimum;
+    private float energyMaximum;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -93,6 +123,12 @@ public class Controller implements Initializable {
         structureTypeId.setValue("None");
         borderSizeId.getItems().addAll("0","1","2","3","4");
         borderSizeId.setValue("0");
+        energyDistributionComboId.getItems().addAll("Homogenous","Heterogenous");
+        energyDistributionComboId.setValue("Homogenous");
+        nucleationTypeComboId.getItems().addAll("Constant","Increasing", "At the beginning");
+        nucleationTypeComboId.setValue("Constant");
+        nucleationLocationComboId.getItems().addAll("Anywhere","On boundaries");
+        nucleationLocationComboId.setValue("Anywhere");
     }
 
     public void handleMouseClick(MouseEvent mouseEvent) {
@@ -285,6 +321,8 @@ public class Controller implements Initializable {
                 }
                 gc.fillRect(c.getX() * SCALE, TOP_PADDING + c.getY()*SCALE, SCALE, SCALE);
             }
+        } else {
+            System.out.println("pusta siatka");
         }
     }
 
@@ -315,37 +353,55 @@ public class Controller implements Initializable {
 
     public void chooseGrainsColors() {
         HashMap<Integer, Color> grains = new HashMap<>();
-        Random generator = new Random();
-
         grains.put(0, Color.WHITE);
         grains.put(1, Color.BLACK);
 
-        for (int i = 2; i <= Nucleon.getNumberOfGrains()+1; i++) {
-            Color color = (Color.rgb(generator.nextInt(255), generator.nextInt(255), generator.nextInt(255)));
-            if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || color.equals(Color.HOTPINK) ||grains.containsValue(color)) {
+        for (int i = 2; i <= Nucleon.getNumberOfGrains() + 1; i++) {
+            double r = Math.random();
+            double gg =  Math.random();
+            double b =  Math.random();
+
+            Color color = Color.color(r, gg,b);
+
+            Color rr = Color.hsb(r,gg,b);
+//            if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || color.equals(Color.MAGENTA) || grains.containsValue(color)) {
+//                --i;
+//                continue;
+//            }
+            if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || color.equals(Color.HOTPINK) ||
+                    rr.getRed() >= (float)330/360 || rr.getRed() <= (float)30/360 || grains.containsValue(color)) {
                 --i;
                 continue;
             }
+
             grains.put(i, color);
+
         }
         Nucleon.setGrainsColors(grains);
     }
 
     public static void chooseGrainsColors(int numberOfGrains) {
-        Map<Integer, Color> mapWithColors = Nucleon.getGrainsColors();
-        int startSize = mapWithColors.size();
-        Random generator = new Random();
-        for (int i = startSize; i < startSize + numberOfGrains+1; i++) {
-            float r = generator.nextFloat();
-            float gg = generator.nextFloat();
-            float b = generator.nextFloat();
+        Map<Integer, Color> colors = Nucleon.getGrainsColors();
+        int colorSize = colors.size();
+        for (int i = colorSize; i < colorSize + numberOfGrains; i++){
 
-            Color color = Color.color(r, gg, b);
-                if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || color.equals(Color.HOTPINK) || mapWithColors.containsValue(color)) {
-                    --i;
-                    continue;
-                }
-            mapWithColors.put(i, color);
+            double r = Math.random();
+            double gg =  Math.random();
+            double b =  Math.random();
+
+            Color color = Color.color(r, gg,b);
+
+            Color rr = Color.hsb(r,gg,b);
+//            if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || color.equals(Color.MAGENTA) || colorsMap.containsValue(color)) {
+//                --i;
+//                continue;
+//            }
+            if (color.equals(Color.WHITE) || color.equals(Color.BLACK) || color.equals(Color.HOTPINK) ||
+                    rr.getRed() >= (float)330/360 || rr.getRed()  <= (float)30/360 || colors.containsValue(color)) {
+                --i;
+                continue;
+            }
+            colors.put(i, color);
         }
     }
 
@@ -823,17 +879,18 @@ public class Controller implements Initializable {
         labelShapeId.setVisible(value);
         shapePercentageId.setVisible(value);
         labelShapePercentageId.setVisible(value);
-        inclusionsAddBtn.setVisible(value);
-        inclusionTypeId.setVisible(value);
-        inclusionsSizeId.setVisible(value);
-        inclusionsId.setVisible(value);
-        labeltypeinclusionId.setVisible(value);
-        labelsizeinclusionId.setVisible(value);
-        labelInclusionId.setVisible(value);
+       // inclusionsAddBtn.setVisible(value);
+       // inclusionTypeId.setVisible(value);
+       // inclusionsSizeId.setVisible(value);
+       // inclusionsId.setVisible(value);
+       // labeltypeinclusionId.setVisible(value);
+       // labelsizeinclusionId.setVisible(value);
+       // labelInclusionId.setVisible(value);
       //  periodicId.setVisible(value);
        // periodicBtn.setVisible(value);
         neighborsCombo.setVisible(value);
         labelneighbourhoodId.setVisible(value);
+
     }
 
     private void hideMC(boolean value) {
@@ -841,5 +898,74 @@ public class Controller implements Initializable {
         mcStepsId.setVisible(value);
         mcJid.setVisible(value);
         labelMCStepsId.setVisible(value);
+        energyDistributionComboId.setVisible(value);
+        nucleationLocationComboId.setVisible(value);
+        nucleationTypeComboId.setVisible(value);
+        energyInsideTextId.setVisible(value);
+        energyEdgesTextId.setVisible(value);
+        energyTresholdTextId.setVisible(value);
+        nucleationAmountTextId.setVisible(value);
+        mcSRXTextId.setVisible(value);
+        growthSRXBtnId.setVisible(value);
+        energyDistributionBtnId.setVisible(value);
+        energyInsideLabelId.setVisible(value);
+        edgesEnergyLabelId.setVisible(value);
+        EnefryTresholdLabelId.setVisible(value);
+        EnergyDistrubutionLabelId.setVisible(value);
+        nucleationLocationLabelId.setVisible(value);
+        nucleationTypeLabelId.setVisible(value);
+        nucleationOnStartLabelId.setVisible(value);
+        iterationLabelId.setVisible(value);
+    }
+
+    public List<Cell> getBorderCells() {
+        return borderCells;
+    }
+
+    public void energyDistributionBtnAction(ActionEvent actionEvent) {
+        float energyInside = Float.parseFloat(energyInsideTextId.getText());
+        float energyOnEdges = energyInside;
+        if (energyDistributionComboId.getValue() == "Heterogenous") {
+            energyOnEdges = Float.parseFloat(energyEdgesTextId.getText());
+        }
+        int threshold = Integer.parseInt(energyTresholdTextId.getText());
+
+        SRX.distributeEnergy(energyInside, energyOnEdges, threshold);
+        prepareEnergy();
+        printEnergy();
+    }
+    
+    private void prepareEnergy() {
+        energyMinimum = 0f;
+        energyMaximum = 16f;
+        printEnergy();
+    }
+
+    private void printEnergy() {
+        if (Nucleon.getGrid() != null) {
+            for (Cell c : Nucleon.getGrid().getGrid()) {
+                gc.setFill(assignColor(c.getEnergy()));
+                gc.fillRect(c.getX() * SCALE, TOP_PADDING + c.getY()*SCALE, SCALE, SCALE);
+            }
+        }
+    }
+
+    private Color assignColor(float energy) {
+        float value = 1 - (energy - energyMinimum) / (energyMaximum - energyMinimum);
+        float hue = value* hueMaximum + (1-value)* hueMinimum;
+        return Color.color(hue, 1, 0.8f);
+    }
+
+    public void growthSRXBtnAction(ActionEvent actionEvent) {
+        int numberOfNucleons = Integer.parseInt(nucleationAmountTextId.getText());
+        String nucleationType = (String) nucleationTypeComboId.getValue();
+        String nucleationLocation = (String) nucleationLocationComboId.getValue();
+        int monteCarloSteps = Integer.parseInt(mcSRXTextId.getText());
+        float coefficientJ = Float.parseFloat(mcJid.getText());
+
+        SRX srx = new SRX(nucleationType, nucleationLocation, numberOfNucleons,
+                coefficientJ, monteCarloSteps);
+        srx.growGrains("Moore");
+        print();
     }
 }
